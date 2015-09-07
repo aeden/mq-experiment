@@ -22,10 +22,10 @@ In a new console:
 
 `cd worker && make && forego start`
 
-## Calling
+## Fire and Forget
 
 Once you have the three services up and running you can hit the web API with a simple curl call:
 
 `curl -i http://localhost:8080/ping`
 
-You should receive a 200 response from the webapp and you should see a message on the worker console.
+You should receive a 200 response from the webapp and you should see a message on the worker console. This demonstrates the concept of fire-and-forget, where a message is sent and the caller is not concerned with the result.
