@@ -9,6 +9,7 @@ import (
 	"net"
 	"net/http"
 	"os"
+	"time"
 )
 
 var version string
@@ -22,6 +23,7 @@ func main() {
 	httpMux := http.NewServeMux()
 	httpMux.HandleFunc("/version", versionHandler)
 	httpMux.HandleFunc("/cast", castHandler)
+	httpMux.HandleFunc("/call", callHandler)
 	httpMux.HandleFunc("/", rootHandler)
 
 	httpHostAndPort := net.JoinHostPort(httpBindAddress, httpBindPort)
@@ -65,7 +67,32 @@ func castHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	defer c.Close()
-	c.Publish("ping", "test")
+	c.Publish("cast", "ping")
 
 	fmt.Fprintf(w, "ping sent")
+}
+
+func callHandler(w http.ResponseWriter, r *http.Request) {
+	nc, err := nats.Connect("nats://localhost:4222")
+	if err != nil {
+		handleError(w, r, err, fmt.Sprintf("Failed to connect to message queue: %s", err), http.StatusInternalServerError)
+		return
+	}
+
+	c, err := nats.NewEncodedConn(nc, nats.JSON_ENCODER)
+	if err != nil {
+		handleError(w, r, err, fmt.Sprintf("Failed to create encoded connection for message queue: %s", err), http.StatusInternalServerError)
+		return
+	}
+
+	defer c.Close()
+
+	var response string
+	err = c.Request("call", "ping", &response, 10*time.Millisecond)
+	if err != nil {
+		handleError(w, r, err, fmt.Sprintf("Error sending synchronous request to message queue: %s", err), http.StatusInternalServerError)
+		return
+	}
+
+	fmt.Fprintf(w, response)
 }

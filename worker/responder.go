@@ -1,4 +1,5 @@
-// Log messages from nats
+// Respond to messages from nats
+
 package main
 
 import (
@@ -6,8 +7,8 @@ import (
 	"log"
 )
 
-func runLogger() {
-	log.Printf("Starting worker")
+func runResponder() {
+	log.Printf("Starting responder")
 
 	nc, err := nats.Connect("nats://localhost:4222")
 	if err != nil {
@@ -23,10 +24,10 @@ func runLogger() {
 
 	log.Printf("Connected")
 
-	subject := "cast"
+	subject := "call"
 
 	subscription, err := c.Subscribe(subject, func(msg *nats.Msg) {
-		log.Printf("Received a message: %v\n", msg)
+		c.Publish(msg.Reply, "pong")
 	})
 
 	if err != nil {
@@ -34,5 +35,6 @@ func runLogger() {
 		return
 	}
 
-	log.Printf("Listening for messages on %s", subscription.Subject)
+	log.Printf("Responding to messages on %s", subscription.Subject)
+
 }

@@ -29,3 +29,12 @@ The first example demonstrates the concept of fire-and-forget, where a message i
 `curl -i http://localhost:8080/cast`
 
 You should receive a 200 response from the webapp and you should see a message on the worker console.
+
+## Request/Response
+
+The next example demonstrates a request/response, which is synchronous. The caller will block until it receives a response from nats or until a timeout occurs:
+
+`curl -i http://localhost:8080/call`
+
+You should receive a 200 response from the webapp and the response body should be `pong`.
+
