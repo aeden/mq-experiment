@@ -26,9 +26,9 @@ func runResponder() {
 
 	subject := "call"
 
-	subscription, err := c.Subscribe(subject, func(msg *nats.Msg) {
-		log.Printf("Received a message: %v\n", msg)
-		c.Publish(msg.Reply, "pong")
+	subscription, err := c.Subscribe(subject, func(subject string, replyTo string, s string) {
+		log.Printf("Received a message: %v", s)
+		c.Publish(replyTo, "pong")
 	})
 
 	if err != nil {

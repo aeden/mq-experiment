@@ -25,8 +25,8 @@ func runLogger() {
 
 	subject := "cast"
 
-	subscription, err := c.Subscribe(subject, func(msg *nats.Msg) {
-		log.Printf("Received a message: %v\n", msg)
+	subscription, err := c.Subscribe(subject, func(s string) {
+		log.Printf("Received a message: %v", s)
 	})
 
 	if err != nil {
