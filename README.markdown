@@ -24,8 +24,8 @@ In a new console:
 
 ## Fire and Forget
 
-Once you have the three services up and running you can hit the web API with a simple curl call:
+The first example demonstrates the concept of fire-and-forget, where a message is sent and the caller is not concerned with the result:
 
 `curl -i http://localhost:8080/cast`
 
-You should receive a 200 response from the webapp and you should see a message on the worker console. This demonstrates the concept of fire-and-forget, where a message is sent and the caller is not concerned with the result.
+You should receive a 200 response from the webapp and you should see a message on the worker console.
