@@ -27,6 +27,7 @@ func runResponder() {
 	subject := "call"
 
 	subscription, err := c.Subscribe(subject, func(msg *nats.Msg) {
+		log.Printf("Received a message: %v\n", msg)
 		c.Publish(msg.Reply, "pong")
 	})
 
