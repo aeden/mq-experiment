@@ -26,6 +26,6 @@ In a new console:
 
 Once you have the three services up and running you can hit the web API with a simple curl call:
 
-`curl -i http://localhost:8080/ping`
+`curl -i http://localhost:8080/cast`
 
 You should receive a 200 response from the webapp and you should see a message on the worker console. This demonstrates the concept of fire-and-forget, where a message is sent and the caller is not concerned with the result.

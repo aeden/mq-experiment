@@ -21,8 +21,8 @@ var (
 func main() {
 	httpMux := http.NewServeMux()
 	httpMux.HandleFunc("/version", versionHandler)
-	httpMux.HandleFunc("/ping", pingHandler)
-	//httpMux.HandleFunc("/", rootHandler)
+	httpMux.HandleFunc("/cast", castHandler)
+	httpMux.HandleFunc("/", rootHandler)
 
 	httpHostAndPort := net.JoinHostPort(httpBindAddress, httpBindPort)
 	log.Print(fmt.Sprint("Starting HTTP service on ", httpHostAndPort))
@@ -51,7 +51,7 @@ func versionHandler(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintf(w, "version: %v", version)
 }
 
-func pingHandler(w http.ResponseWriter, r *http.Request) {
+func castHandler(w http.ResponseWriter, r *http.Request) {
 	nc, err := nats.Connect("nats://localhost:4222")
 	if err != nil {
 		handleError(w, r, err, fmt.Sprintf("Failed to connect to message queue: %s", err), http.StatusInternalServerError)
